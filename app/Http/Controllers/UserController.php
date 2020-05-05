@@ -25,7 +25,7 @@ class UserController extends Controller
             $status = 200;
             $response = [
                 'user' => Auth::user(),
-                'token' => Auth::user()->createToken('bigStore')->accessToken,
+                'token' => Auth::user()->createToken('ShopSzop')->accessToken,
             ];
         }
 
@@ -53,7 +53,7 @@ class UserController extends Controller
 
         return response()->json([
             'user' => $user,
-            'token' => $user->createToken('bigStore')->accessToken,
+            'token' => $user->createToken('SzopShop')->accessToken,
         ]);
     }
 
@@ -62,10 +62,6 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    public function showOrders(User $user)
-    {
-        return response()->json($user->orders()->with(['product'])->get());
-    }
     public function admin(User $user)
     {
         $user->isAdmin=TRUE;
