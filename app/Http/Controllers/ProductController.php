@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Product;
+use App\Category;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
@@ -10,6 +11,11 @@ class ProductController extends Controller
     public function index()
     {
         return response()->json(Product::all(),200);
+    }
+
+    public function indexCategories()
+    {
+        return response()->json(Category::all(),200);
     }
 
     public function store(Request $request)
@@ -33,15 +39,6 @@ class ProductController extends Controller
     public function show(Product $product)
     {
         return response()->json($product,200);
-    }
-
-    public function uploadFile(Request $request)
-    {
-        if($request->hasFile('image')){
-            $name = time()."_".$request->file('image')->getClientOriginalName();
-            $request->file('image')->move(public_path('images'), $name);
-        }
-        return response()->json(asset("images/$name"),201);
     }
 
     public function update(Request $request, Product $product)

@@ -9,17 +9,17 @@
                             <div class="form-group row">
                                 <label for="email" class="col-md-4 col-sm-4 col-form-label text-md-right">E-Mail Address</label>
                                 <div class="col-md-6">
-                                    <input id="email" type="email" class="form-control" v-model="email" required autofocus>
+                                    <input ref="email "id="email" type="email" class="form-control" v-model="email" required autofocus>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="password" class="col-md-4 col-sm-4 col-form-label text-md-right">Password</label>
                                 <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control" v-model="password" required>
+                                    <input ref="password" id="password" type="password" class="form-control" v-model="password" required>
                                 </div>
                             </div>
                             <div class="form-group row mb-0">
-                                <div class="col-md-1 offset-md-4 row justify-content-end">
+                                <div class="col-md-6 offset-md-4 row justify-content-end">
                                     <button type="submit" class="btn btn-primary" @click="handleSubmit">
                                         Login
                                     </button>
@@ -51,17 +51,18 @@
                         let is_admin = user.is_admin;
 
                         localStorage.setItem('SzopShop.user', JSON.stringify(user));
-                        localStorage.setItem('SzopShop.jwt', response.data.token);
+                        localStorage.setItem('SzopShop.jwt', res.data.token);
 
                         if (localStorage.getItem('SzopShop.jwt') != null)
                         {
-                            this.$emit('loggedIn')
+                            this.$emit('loggedin');
                             if (this.$route.params.nextUrl != null)
                             {
                                 this.$router.push(this.$route.params.nextUrl);
-                            } else
+                            }
+                            else
                             {
-                                this.$router.push((is_admin === true ? 'admin' : 'dashboard'));
+                                this.$router.push((is_admin === true ? {name:'admin'} : {name:'dashboard'}));
                             }
                         }
                     });

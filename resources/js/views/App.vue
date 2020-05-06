@@ -14,8 +14,8 @@
                         <router-link :to="{ name: 'login' }" class="nav-link" v-if="!isLoggedIn">Login</router-link>
                         <router-link :to="{ name: 'register' }" class="nav-link" v-if="!isLoggedIn">Register</router-link>
                         <span v-if="isLoggedIn">
-                            <router-link :to="{ name: 'dashboard' }" class="nav-link" v-if="user_type == 0"> Hi, {{name}}</router-link>
-                            <router-link :to="{ name: 'admin' }" class="nav-link" v-if="user_type == 1"> Hi, {{name}}</router-link>
+                            <router-link :to="{ name: 'dashboard' }" class="nav-link" v-if="user_type === false"> Hi, {{name}}</router-link>
+                            <router-link :to="{ name: 'admin' }" class="nav-link" v-if="user_type === true"> Hi, {{name}}</router-link>
                             <router-link :to="{ name: 'basket'}" class="nav-link"><font-awesome-icon :icon="['fas','shopping-cart']"></font-awesome-icon></router-link>
                         </span>
                         <li class="nav-link" v-if="isLoggedIn" @click="logout"> Logout</li>
@@ -24,7 +24,7 @@
             </div>
         </nav>
         <main class="py-4">
-            <router-view @loggedIn="change"></router-view>
+            <router-view v-on:loggedin="change"></router-view>
         </main>
     </div>
 </template>
@@ -34,7 +34,7 @@
             return {
                 name        : null,
                 user_type   : 0,
-                isLoggedIn  : localStorage.getItem('jwt') != null
+                isLoggedIn  : localStorage.getItem('SzopShop.jwt') != null
             }
         },
         mounted() {
@@ -43,20 +43,20 @@
         methods : {
             setDefaults(){
                 if(this.isLoggedIn){
-                    let user        = JSON.parse(localStorage.getItem('user'))
-                    this.name       = user.name
-                    this.user_type  = user.is_admin
+                    let user        = JSON.parse(localStorage.getItem('SzopShop.user'));
+                    this.name       = user.name;
+                    this.user_type  = user.is_admin;
                 }
             },
             change(){
-                this.isLoggedIn = localStorage.getItem('jwt') != null
-                this.setDefaults()
+                this.isLoggedIn = localStorage.getItem('SzopShop.jwt') != null;
+                this.setDefaults();
             },
             logout(){
-                localStorage.removeItem('jwt')
-                localStorage.removeItem('user')
-                this.change()
-                this.$router.push('/')
+                localStorage.removeItem('SzopShop.jwt');
+                localStorage.removeItem('SzopShop.user');
+                this.change();
+                this.$router.push('/');
             }
         }
     }

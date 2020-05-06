@@ -20,6 +20,7 @@ Route::post('/register', 'UserController@register');
 Route::get('/products', 'ProductController@index');
 //product details - public
 Route::get('/products/{product}', 'ProductController@show');
+Route::get('/categories','ProductController@indexCategories');
 
 Route::group(['middleware' => ['auth:api','isNotBanned']], function(){
     //Show profile
@@ -63,6 +64,6 @@ Route::group(['middleware' => ['auth:api','isNotBanned']], function(){
         Route::delete('/products/{id}', 'ProductController@delete');
         Route::post('/products', 'ProductController@create');
         Route::patch('/products/{id}', 'ProductController@update');
-        Route::post('/upload-file', 'ProductController@uploadFile');
+        Route::post('/upload-file', 'FileController@uploadFile');
     });
 });

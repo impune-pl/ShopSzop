@@ -27,6 +27,7 @@ class UserController extends Controller
                 'user' => Auth::user(),
                 'token' => Auth::user()->createToken('ShopSzop')->accessToken,
             ];
+
         }
 
         return response()->json($response, $status);
@@ -69,7 +70,7 @@ class UserController extends Controller
         return response()->json([
             'status' => (bool) $user,
             'data'   => $user,
-            'message' => $user ? 'Order placed' : 'Error placing order'
+            'message' => $user ? 'User granted admin privileges' : 'Error elevating user privileges'
         ]);
     }
     public function unadmin(User $user)
@@ -79,7 +80,7 @@ class UserController extends Controller
         return response()->json([
             'status' => (bool) $user,
             'data'   => $user,
-            'message' => $user ? 'Order placed' : 'Error placing order'
+            'message' => $user ? 'User demoted' : 'Error demoting user'
         ]);
     }
     public function ban(User $user)
@@ -89,7 +90,7 @@ class UserController extends Controller
         return response()->json([
             'status' => (bool) $user,
             'data'   => $user,
-            'message' => $user ? 'Order placed' : 'Error placing order'
+            'message' => $user ? 'User banned' : 'Error banning user'
         ]);
     }
     public function unban(User $user)
@@ -99,7 +100,7 @@ class UserController extends Controller
         return response()->json([
             'status' => (bool) $user,
             'data'   => $user,
-            'message' => $user ? 'Order placed' : 'Error placing order'
+            'message' => $user ? 'User unbanned' : 'Error unbanning user'
         ]);
     }
     public function notify(Request $request)

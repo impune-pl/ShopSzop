@@ -21,13 +21,13 @@
                             <div class="form-group row">
                                 <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
                                 <div class="col-md-6">
-                                    <input id="password" type="password" class="form-control" v-model="password" required @change="passwordChange">
+                                    <input ref="password" id="password" type="password" class="form-control" v-model="password" required @change="passwordChange">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label for="password-confirm" class="col-md-4 col-form-label text-md-right">Confirm Password</label>
                                 <div class="col-md-6">
-                                    <input id="password-confirm" type="password" class="form-control" v-model="password_confirmation" required @change="passwordChange">
+                                    <input ref="password-confirm" id="password-confirm" type="password" class="form-control" v-model="password_confirmation" required @change="passwordChange">
                                 </div>
                             </div>
                             <div class="form-group row mb-0">
@@ -70,9 +70,9 @@
                 let c_password = this.password_confirmation;
                 axios.post('api/register', {name, email, password, c_password}).then(response => {
                     let data = response.data;
-                    localStorage.setItem('bigStore.user', JSON.stringify(data.user));
-                    localStorage.setItem('bigStore.jwt', data.token);
-                    if (localStorage.getItem('bigStore.jwt') != null)
+                    localStorage.setItem('ShopSzop.user', JSON.stringify(data.user));
+                    localStorage.setItem('ShopSzop.jwt', data.token);
+                    if (localStorage.getItem('ShopSzop.jwt') != null)
                     {
                         this.$emit('loggedIn');
                         let nextUrl = this.$route.params.nextUrl;
@@ -88,24 +88,24 @@
                     if(this.$refs["password"].classList.contains("is-valid"))
                     {
                         this.$refs["password"].classList.remove("is-valid");
-                        this.$refs["password_confirmation"].classList.remove("is-valid");
+                        this.$refs["password-confirm"].classList.remove("is-valid");
                     }
                     if( ! this.$refs["password"].classList.contains("is-invalid"))
                     {
                         this.$refs["password"].classList.add("is-invalid");
-                        this.$refs["password_confirmation"].classList.add("is-invalid");
+                        this.$refs["password-confirm"].classList.add("is-invalid");
                     }
                 } else if(this.password === this.password_confirmation && this.password.length >= 8)
                 {
                     if( ! this.$refs["password"].classList.contains("is-valid"))
                     {
                         this.$refs["password"].classList.add("is-valid");
-                        this.$refs["password_confirmation"].classList.add("is-valid");
+                        this.$refs["password-confirm"].classList.add("is-valid");
                     }
                     if(this.$refs["password"].classList.contains("is-invalid"))
                     {
                         this.$refs["password"].classList.remove("is-invalid");
-                        this.$refs["password_confirmation"].classList.remove("is-invalid");
+                        this.$refs["password-confirm"].classList.remove("is-invalid");
                     }
                 } else
                 {

@@ -9,10 +9,10 @@ import VueRouter from "vue-router";
 Vue.use(VueRouter);
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faUserSecret } from '@fortawesome/free-solid-svg-icons';
+import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
-library.add(faUserSecret);
+library.add(faShoppingCart);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
@@ -28,6 +28,7 @@ import Products from "./views/Products";
 import Dashboard from "./views/Dashboard";
 import Admin from "./views/Admin";
 import App from "./views/App";
+import Basket from "./views/Basket";
 
 require('./bootstrap');
 /**
@@ -43,8 +44,9 @@ const routes = [
     {name: 'product_details', path: '/products/:id', component: ProductDetails},
     {name: 'login', path: '/login', component: Login},
     {name: 'register', path: '/register', component: Register},
+    {name: 'basket', path: '/basket', component: Basket},
     {name: 'orders', path: '/orders', component: Orders, meta:{requiresAuth: true, is_user: true}},
-    {name: 'order_details', path: '/orders/{id}', component: OrderDetails, meta:{requiresAuth: true, is_user: true}},
+    {name: 'order_details', path: '/orders/:id', component: OrderDetails, meta:{requiresAuth: true, is_user: true}},
     {name: 'users', path: '/users', component: Users, meta:{requiresAuth: true, is_admin: true}},
     {name: 'rules', path: '/rules', component: Rules},
     {name: 'dashboard', path: '/dashboard', component: Dashboard, meta:{requiresAuth: true, is_user: true}},
@@ -53,6 +55,17 @@ const routes = [
 ];
 
 const router = new VueRouter({mode: 'history',routes: routes});
+
+axios.interceptors.request.use(function (config) {
+    let token = localStorage.getItem('SzopShop.jwt');
+    if (token)
+    {
+        config.headers['Authorization'] = `Bearer `+token;
+    }
+    return config;
+}, function (error) {
+    return Promise.reject(error);
+});
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

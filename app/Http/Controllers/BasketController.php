@@ -4,63 +4,55 @@ namespace App\Http\Controllers;
 
 use App\Basket;
 use App\Product;
+use App\product_basket;
+use App\User;
 use Illuminate\Http\Request;
 
 class BasketController extends Controller
 {
     public function index(Request $request)
     {
-
-        return response()->json($this->getBasket($request));
+        return response()->json(product_basket::where('user_id','=',$request->user()->id)->get());
     }
 
     public function add(Request $request,Product $product)
     {
-        $basket = $this->getBasket($request);
-        $success = TRUE;
-        If($product->stock>=1) {
-            $basket->addProduct($product);
-        }
-        else
-            $success=FALSE;
-        return response()->json([
-            'status'=>$success,
-            'message' => $success ? 'Item added to basket' : 'Not enough items in stock'
-        ]);
+        return $this->update($request,$product,1);
     }
 
     public function update(Request $request,Product $product, int $amount)
     {
-        if($amount >= 0 && $amount <= $product->stock) {
-            $basket = $this->getBasket($request);
-            $basket->changeProductCount($product,$amount);
-            return response()->json([
-                'status'=>TRUE,
-                'message' => 'Changes saved'
-            ]);
+        $basket_products = product_basket::where('user_id','=',$request->user()->id)->get();
+        $product_basket = FALSE;
+        $product_basket;
+        if($basket_products->has($product->id))
+        {
+            $product_basket= $basket_products->get($product->id);
+            $product_basket->amount += $amount;
+            $product_basket->save();
         }
         else
         {
-            return response()->json([
-                'status'=>FALSE,
-                'message' => 'Incorrect amount'
-            ]);
+            $product_basket = product_basket::create([
+                'product_id'=>$product->id,
+                'user_id'=>$request->user()->id,
+                'amount'=>$amount
+            ])->save();
         }
+        return response()->json([
+            'status' => (bool) $product_basket,
+            'data'   => $product_basket,
+            'message' => $product_basket ? 'Product added to basket!' : 'Error adding Product to basket'
+        ]);
     }
 
     public function delete(Request $request)
     {
-        $request->session()->get('basket');
-    }
-
-    private function getBasket($request)
-    {
-        $basket = $request->session()->get('basket');
-        if($basket == NULL)
-        {
-            $basket = new Basket();
-            Session::put('basket', $basket);
-        }
-        return $basket;
+        product_basket::where('user_id','=',$request->user()->id)->delete();
+        return response()->json([
+            'status'    => TRUE,
+            'data'      => [],
+            'message'   => 'Basket emptied'
+        ]);
     }
 }
