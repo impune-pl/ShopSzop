@@ -11,9 +11,15 @@ use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(User::with(['orders'])->get());
+        $id = $request->user()->id;
+        return response()->json(User::where('user_id','=', $id)->get());
+    }
+
+    public function indexAll()
+    {
+        return response()->json(User::all());
     }
 
     public function login(Request $request)
@@ -48,7 +54,8 @@ class UserController extends Controller
 
         $data = $request->only(['name', 'email', 'password']);
         $data['password'] = bcrypt($data['password']);
-
+        $data[ 'isAdmin']=FALSE;
+        $data[ 'isBanned']=FALSE;
         $user = User::create($data);
         $user->is_admin = 0;
 
@@ -63,8 +70,9 @@ class UserController extends Controller
         return response()->json($user);
     }
 
-    public function admin(User $user)
+    public function admin(int $id)
     {
+        $user=User::where('id','=',$id)->first();
         $user->isAdmin=TRUE;
         $user->save();
         return response()->json([
@@ -73,8 +81,9 @@ class UserController extends Controller
             'message' => $user ? 'User granted admin privileges' : 'Error elevating user privileges'
         ]);
     }
-    public function unadmin(User $user)
+    public function unadmin(int $id)
     {
+        $user=User::where('id','=',$id)->first();
         $user->isAdmin=FALSE;
         $user->save();
         return response()->json([
@@ -83,8 +92,9 @@ class UserController extends Controller
             'message' => $user ? 'User demoted' : 'Error demoting user'
         ]);
     }
-    public function ban(User $user)
+    public function ban(int $id)
     {
+        $user=User::where('id','=',$id)->first();
         $user->isBanned=TRUE;
         $user->save();
         return response()->json([
@@ -93,8 +103,9 @@ class UserController extends Controller
             'message' => $user ? 'User banned' : 'Error banning user'
         ]);
     }
-    public function unban(User $user)
+    public function unban(int $id)
     {
+        $user=User::where('id','=',$id)->first();
         $user->isBanned=FALSE;
         $user->save();
         return response()->json([
@@ -103,16 +114,17 @@ class UserController extends Controller
             'message' => $user ? 'User unbanned' : 'Error unbanning user'
         ]);
     }
-    public function notify(Request $request)
+    public function notify(Request $request, String $email)
     {
-        $user = User::find($request->recipient_user_id);
+        $user = User::where('email','like',$email)->first();
         $data=['name'=>$user->name,'text'=>$request->text];
         Mail::to($user)->send(new UniversalNotification($data));
     }
     public function notifyAll(Request $request)
     {
-        $data = ['text'=>$request->text];
+        $data = ['text'=>$request->notificationText];
         $users = User::all();
+        dump($users);
         Mail::bcc($users)->send(new UniversalNotification($data));
     }
 }

@@ -8,15 +8,15 @@ class product_basket extends Model
 {
     public $timestamps = false;
     protected $fillable = [
-        'product_id','user_id','amount'
+        'product_id','user_id','amount','version'
     ];
     public function product()
     {
-        return $this->hasOne(Product::Class,'product_id');
+        return $this->hasOne(Product::Class,'id','product_id');
     }
 
     public function basket()
     {
-        return $this->belongsTo(User::Class,'user_id');
+        return $this->belongsTo(User::Class,'user_id','id');
     }
 }

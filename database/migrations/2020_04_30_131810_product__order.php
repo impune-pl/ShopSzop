@@ -19,7 +19,7 @@ class ProductOrder extends Migration
             $table->foreign('product_id')->references('id')->on('products');
             $table->bigInteger('order_id')->unsigned();
             $table->foreign('order_id')->references('id')->on('orders');
-            $table->integer('amount');
+            $table->integer('amount')->unsigned();
         });
     }
 

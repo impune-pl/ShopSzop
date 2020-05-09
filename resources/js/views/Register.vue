@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card card-default">
+                <div class="card border-0 shadow-sm rounded-0 card-default">
                     <div class="card-header">Register</div>
                     <div class="card-body">
                         <form>

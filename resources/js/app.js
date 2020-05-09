@@ -7,28 +7,36 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 Vue.use(VueRouter);
+import JQuery from 'jquery';
+Window.$ = JQuery;
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
+import { faShoppingCart,faTrash, faCashRegister, faCaretDown,faCreditCard,faTruckLoading,faLockOpen,faLock,faHashtag,faDollarSign} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-
+library.add(faCaretDown);
 library.add(faShoppingCart);
+library.add(faTrash);
+library.add(faCashRegister);
+library.add(faCreditCard);
+library.add(faTruckLoading);
+library.add(faLockOpen);
+library.add(faLock);
+library.add(faHashtag);
+library.add(faDollarSign);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 import Home from './views/Home';
-import OrderDetails from "./views/OrderDetails";
-import Users from "./views/Users";
 import Rules from "./views/Rules";
 import Orders from "./views/Orders";
 import Register from "./views/Register";
 import Login from "./views/Login";
 import ProductDetails from "./views/ProductDetails";
 import Products from "./views/Products";
-import Dashboard from "./views/Dashboard";
-import Admin from "./views/Admin";
 import App from "./views/App";
 import Basket from "./views/Basket";
+import Checkout from "./views/Checkout";
+import Admin from "./views/Admin";
 
 require('./bootstrap');
 /**
@@ -39,19 +47,17 @@ require('./bootstrap');
  * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
  */
 const routes = [
-    {name: 'home', path: '/', component: Home},
-    {name: 'products', path: '/products', component: Products},
-    {name: 'product_details', path: '/products/:id', component: ProductDetails},
-    {name: 'login', path: '/login', component: Login},
-    {name: 'register', path: '/register', component: Register},
-    {name: 'basket', path: '/basket', component: Basket},
-    {name: 'orders', path: '/orders', component: Orders, meta:{requiresAuth: true, is_user: true}},
-    {name: 'order_details', path: '/orders/:id', component: OrderDetails, meta:{requiresAuth: true, is_user: true}},
-    {name: 'users', path: '/users', component: Users, meta:{requiresAuth: true, is_admin: true}},
+    {name: 'home', path: '/', component: Home},//ok
+    {name: 'products', path: '/products', component: Products},//ok, fix toasts not appearing
+    {name: 'product_details', path: '/products/:id', component: ProductDetails},//ok, add toasts
+    {name: 'login', path: '/login', component: Login},//ok, fix redirect
+    {name: 'register', path: '/register', component: Register},//ok, add confirmation email
+    {name: 'basket', path: '/basket', component: Basket, meta:{requiresAuth: true, is_user: true}},//ok
+    {name: 'checkout', path: '/checkout', component: Checkout, meta:{requiresAuth: true, is_user: true}},//ok, test for redirect, add error toast
+    {name: 'orders', path: '/orders', component: Orders, meta:{requiresAuth: true, is_user: true}},//WIP
     {name: 'rules', path: '/rules', component: Rules},
-    {name: 'dashboard', path: '/dashboard', component: Dashboard, meta:{requiresAuth: true, is_user: true}},
-    {name: 'admin', path: '/admin', component:  Admin, meta:{requiresAuth: true, is_admin: true}},
-    {name: 'admin_page', path: '/admin/{page}', Admin, meta:{requiresAuth: true, is_admin: true}}
+    {name: 'admin', path: '/admin', component: Admin, meta:{requiresAuth: true, is_admin: true}},
+    {name: 'admin_path', path: '/admin/:path', component: Admin, meta:{requiresAuth: true, is_admin: true}}
 ];
 
 const router = new VueRouter({mode: 'history',routes: routes});
@@ -80,16 +86,28 @@ router.beforeEach((to, from, next) => {
                 path: '/login',
                 params: { nextUrl: to.fullPath }
             });
-        } else
+        }
+        else
         {
-            let user = JSON.parse(localStorage.getItem('SzopShop.user'))
-            if (to.matched.some(record => record.meta.is_admin) && user.is_admin === false)
-                next({ name: 'dashboard' });
-            else if (to.matched.some(record => record.meta.is_user) && user.is_admin === true)
-                next({ name: 'admin' });
+            let user = JSON.parse(localStorage.getItem('SzopShop.user'));
+            if (to.matched.some(record => record.meta.is_admin))
+            {
+                if (user.isAdmin === true)
+                    next();
+                else
+                    next({ name: 'home' });
+            }
+            else if (to.matched.some(record => record.meta.is_user))
+            {
+                if (user.isAdmin === false)
+                    next();
+                else
+                    next({ name: 'admin_orders' });
+            }
+            next();
         }
     } else
-        next()
+        next();
 });
 
 const app = new Vue({

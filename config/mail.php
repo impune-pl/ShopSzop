@@ -83,8 +83,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'noreply@szopshop.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_FROM_ADDRESS', 'noreply@szopshop.local'),
+        'name' => env('MAIL_FROM_NAME', 'SzopShop'),
     ],
 
     /*

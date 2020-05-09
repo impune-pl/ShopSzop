@@ -31,7 +31,7 @@ class UniversalNotification extends Mailable
      */
     public function build()
     {
-        return $this->view('simple_email')->with([
+        return $this->view('simple_mass_email')->with([
             'text'=>$this->data['text'],
         ]);
     }

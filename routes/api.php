@@ -27,8 +27,6 @@ Route::group(['middleware' => ['auth:api','isNotBanned']], function(){
     Route::get('/users','UserController@index');
     //Show orders (only for user)
     Route::get('/orders', 'OrderController@index');
-    //Show order details
-    Route::get('/orders/{id}','OrderController@show');
 
     //Place order
     Route::post('/order/place','OrderController@place');
@@ -39,27 +37,30 @@ Route::group(['middleware' => ['auth:api','isNotBanned']], function(){
     Route::post('/products/{product}/to-basket', 'BasketController@add');
     //change amount of product units in basket
     Route::patch('/basket/{product}/{amount}', 'BasketController@update');
+    Route::patch('/basket/{product}', 'BasketController@remove');
     //empty the basket
     Route::delete('/basket', 'BasketController@delete');
 
     Route::middleware('isAdmin')->group(function()
     {
-        //Monitor user orders and allow to simulate delivery
-        Route::get('/users/{user}/orders','UserController@index');
+        //Get users
+        Route::get('/users','UserController@index');
         //Allow to simulate delivery of given order
         Route::patch('/orders/{id}/deliver','OrderController@deliverOrder');
+        //Allow to simulate payment for given order
+        Route::patch('/orders/{id}/pay','OrderController@payOrder');
         //Allow to view all orders
         Route::get('/orders/all', 'OrderController@indexAll');
 
-        Route::get('/users/{id}','UserController@show');
         //User control
+        Route::get('/users/all', 'UserController@indexAll');
         Route::patch('/users/{id}/ban', 'UserController@ban');
         Route::patch('/users/{id}/unban', 'UserController@unban');
         Route::patch('/users/{id}/admin', 'UserController@admin');
         Route::patch('/users/{id}/unadmin', 'UserController@unadmin');
         //Email notifications control
-        Route::post('/users/{id}/notify', 'UserController@notifyOne');
-        Route::post('/users/notify', 'UserController@notifyAll');
+        Route::post('/{email}/notify', 'UserController@notifyOne');
+        Route::post('/notify', 'UserController@notifyAll');
         //Product C,U,D, with file upload
         Route::delete('/products/{id}', 'ProductController@delete');
         Route::post('/products', 'ProductController@create');

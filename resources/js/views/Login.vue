@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-md-8">
-                <div class="card card-default">
+                <div class="card card-default rounded-0 border-0 shadow-sm">
                     <div class="card-header">Login</div>
                     <div class="card-body">
                         <form>
@@ -62,7 +62,7 @@
                             }
                             else
                             {
-                                this.$router.push((is_admin === true ? {name:'admin'} : {name:'dashboard'}));
+                                this.$router.push((is_admin === true ? {name:'admin_orders'} : {name:'orders'}));
                             }
                         }
                     });

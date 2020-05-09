@@ -21,8 +21,8 @@ class CreateUsersTable extends Migration
             $table->string('password');
             $table->string('api_token')->nullable();
             $table->timestamps();
-            $table->boolean('isBanned');
-            $table->boolean('isAdmin');
+            $table->boolean('isBanned')->default(FALSE);
+            $table->boolean('isAdmin')->default(FALSE);
         });
     }
 

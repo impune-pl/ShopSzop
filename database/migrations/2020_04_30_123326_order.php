@@ -17,7 +17,7 @@ class Order extends Migration
             $table->id();
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users');
-            $table->bigInteger('payment_id')->unsigned();
+            $table->bigInteger('payment_id')->unsigned()->default(0);
             //$table->foreign('payment_id')->references('id')->on('payments');
             $table->bigInteger('shipping_address_id')->unsigned();
             $table->foreign('shipping_address_id')->references('id')->on('shipping_address');

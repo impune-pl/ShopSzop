@@ -19,7 +19,8 @@ class ProductsBaskets extends Migration
     $table->foreign('product_id')->references('id')->on('products');
     $table->bigInteger('user_id')->unsigned();
     $table->foreign('user_id')->references('id')->on('users');
-    $table->integer('amount');
+    $table->integer('amount')->unsigned()->default(1);
+    $table->bigInteger('version')->unsigned()->default(0);
 });
     }
 
