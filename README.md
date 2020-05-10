@@ -1,4 +1,4 @@
-###Simplified web store written in Laravel and Vue.
+Simplified web store written in Laravel and Vue.
 Pre-requirements:  
 This application is configured to use postgresql as database server. If you are using different server, 
 you have to edit lines starting with ```DB_``` in ```.env``` file.
@@ -16,7 +16,7 @@ npm install
 3. If you are not using laravel homestead vagrant virtual machine, you will probably need to execute ```php artisan serve```
 
 
-####For testing:
+For testing:
 ```/telescope/``` - contains laravel debugging/monitoring tool for you to use  
 Any notifications that you try to send from admin panel, will end up in log section in telescope, unless you configure
  ```/config/mail.php``` and ```.env``` to use email server and account.
@@ -27,4 +27,4 @@ User account - username: user, mail: user@mail.local, password: 1234user
 Test account - username: test, mail: test@mail.local, password: 1234test - banned by default.  
 
 
-##Have fun!
+Have fun!
