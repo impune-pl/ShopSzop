@@ -212,13 +212,13 @@
         },
         mounted()
         {
-            axios.get('/api/products',).then((response)=>
+            axios.get('/api/products').then((response)=>
             {
                 this.products=response.data;
             }).catch(error => {
                 console.error(error);
             });
-            axios.get('/api/categories',).then((response)=>
+            axios.get('/api/categories').then((response)=>
             {
                 this.categories=response.data;
             }).catch(error => {

@@ -48,7 +48,13 @@
 
                     axios.post('api/login', {email, password}).then(res => {
                         let user = res.data.user;
-                        let is_admin = user.is_admin;
+                        let is_admin = user.isAdmin;
+                        let is_banned = user.isBanned;
+                        if(is_banned)
+                        {
+                            this.$router.push({name:'rules'});
+                            return;
+                        }
 
                         localStorage.setItem('SzopShop.user', JSON.stringify(user));
                         localStorage.setItem('SzopShop.jwt', res.data.token);
