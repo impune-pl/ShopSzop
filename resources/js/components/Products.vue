@@ -279,8 +279,8 @@
                 remove(id,e)
                 {
                     e.preventDefault();
-                    axios.delete('/api/products/'+id).then((response)=>
-                        this.refresh();
+                    axios.delete('/api/products/'+id).then((response)=>{
+                        this.refresh();}
                     ).catch(error => {
                         console.error(error);
                     });
