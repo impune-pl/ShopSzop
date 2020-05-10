@@ -62,7 +62,7 @@ Route::group(['middleware' => ['auth:api','isNotBanned']], function(){
         Route::post('/{email}/notify', 'UserController@notifyOne');
         Route::post('/notify', 'UserController@notifyAll');
         //Product C,U,D, with file upload
-        Route::delete('/products/{id}', 'ProductController@delete');
+        Route::delete('/products/{id}', 'ProductController@destroy');
         Route::post('/products', 'ProductController@create');
         Route::patch('/products/{id}', 'ProductController@update');
         Route::post('/upload-file', 'FileController@uploadFile');

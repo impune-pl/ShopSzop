@@ -41,8 +41,11 @@ class ProductController extends Controller
         return response()->json($product,200);
     }
 
-    public function update(Request $request, Product $product)
+    public function update(Request $request)
     {
+        $id = $request->id;
+        $product = Product::where('id','=',$id)->first();
+
         $status = $product->update(
             $request->only(['name', 'description', 'stock', 'price', 'image','category_id'])
         );
@@ -50,6 +53,23 @@ class ProductController extends Controller
         return response()->json([
             'status' => $status,
             'message' => $status ? 'Product Updated!' : 'Error Updating Product'
+        ]);
+    }
+
+    public function create(Request $request)
+    {
+        $status = Product::create([
+            'name' => $request->post()['name'],
+            'price' => $request->post()['price'],
+            'stock' => $request->post()['stock'],
+            'description' => $request->post()['description'],
+            'image_path' => $request->post()['image_path'],
+            'category_id' => $request->post()['category_id']
+        ]);
+
+        return response()->json([
+            'status' => $status,
+            'message' => $status ? 'Product Created!' : 'Error Creating Product'
         ]);
     }
 
@@ -64,9 +84,9 @@ class ProductController extends Controller
         ]);
     }
 
-    public function destroy(Product $product)
+    public function destroy(int $id)
     {
-        $status = $product->delete();
+        $status = $product = Product::where('id','=',$id)->first()->delete();;
 
         return response()->json([
             'status' => $status,

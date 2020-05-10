@@ -11,7 +11,7 @@ import JQuery from 'jquery';
 Window.$ = JQuery;
 
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faShoppingCart,faTrash, faCashRegister, faCaretDown,faCreditCard,faTruckLoading,faLockOpen,faLock,faHashtag,faDollarSign} from '@fortawesome/free-solid-svg-icons';
+import { faPlus, faShoppingCart,faTrash,faEdit, faCashRegister, faCaretDown,faCreditCard,faTruckLoading,faLockOpen,faLock,faHashtag,faDollarSign} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 library.add(faCaretDown);
 library.add(faShoppingCart);
@@ -23,6 +23,8 @@ library.add(faLockOpen);
 library.add(faLock);
 library.add(faHashtag);
 library.add(faDollarSign);
+library.add(faEdit);
+library.add(faPlus);
 
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 

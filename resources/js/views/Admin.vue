@@ -32,7 +32,7 @@
             Main: Notifications, Users, Products, Orders
         },
         beforeMount() {
-            this.setComponent(this.$route.params.page);
+            this.setComponent(this.$route.params.path);
         },
         methods: {
             setComponent(value) {
